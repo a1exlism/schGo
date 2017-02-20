@@ -6,78 +6,99 @@
 
 
 
+```python
 
-## user
-- _id
-- name[重复 或 不重复?]
-- school
-- phone
-- wechat
-- weibo
-- qq
-- bio
-- balance
-- credit [信用等级]
-- params
-    - pic_url
+# TODO: Money should be a accurate type
+ID = "An Object ID"
+TIME = "a datetime type"
 
-- (感觉Android 端的那个 UI 有点问题, IM 部分没凸显出来)
-- (好多都没凸显出来, 原型还得再做...)
+USER = {
+    "name": "",
+    "school": "",
+    "phone": "",
+    "wechat": "",
+    "weibo": "",
+    "qq": "",
+    "bio": "",
+    "balance": 0,
+    "credit": 0,
+    "params": {
+        "pic_url": "",
+    },
+}
 
-## task
+TASK = {
+    "place": "",
+    "publisher": {
+        "id": ID,
+        "name": "",
+        "url": "",
+    },
+    "receiver_id": ID,
+    "description": "",
+    "reward": 0,
+    "pub_time": TIME,
+    "from": {
+        "detail": "",
+        "landmark": "",
+        "campus": "",
+        "school": "",
+    },
+    "to": {
+        "detail": "",
+        "landmark": "",
+        "campus": "",
+        "school": "",
+    },
+}
 
-- _id
-- place
-- publisher
-    - publisher_id
-    - publisher_name
-    - avatar_url
-- receiver_id
-- description
-- reward
-- pub_time
-- from
-    - detai
-    - landmark
-    - campus[校区]
-    - school
-- to
-    - ...
-    - school
+LOCATIONS = {
 
-## locations [为了弥补地图服务的不足]
+}
 
+USER_TASKS = {
+    "task_id": ID,
+}
 
-## user_tasks 
+FOLLOWERS = {
+    "idol_id": ID,
+    "fans_id": ID,
+}
 
-- _id
-- 
+PRODUCT = {
+    "publisher_id": ID,
+    "pub_time": TIME,
+    "description": "",
+    "views": 0,
+    "likes": 0,
+    "from": "",  # the school of publisher
+    "params": {
+        "pic_url": "",
+        "video_url": "",
+    },
+    "tags": ["tag1", "tag2"],
+    "comments": [
+        {
+            "floor": 0,
+            "author": "",
+            "author_id": ID,
+            "date": TIME,
+            "comments": "",
+            "likes": 0,
+        },
+        {
+            "floor": 0,
+            "author": "",
+            "author_id": ID,
+            "date": TIME,
+            "comments": "",
+            "likes": 0,
+        },
+    ]
+}
 
+# 优惠
+PREFERENTIAL = {
 
-## followers
-
-- _id
-- user_id
-- following_id
-
-## product
-
-- _id
-- publisher_id
-- pub_time
-- description
-- popularity
-- likes
-- from [the school of publisher]
-- params
-    - pic_url...
-    - video_url...
-- tags
-- comment
-    - comments
-    - date
-    - author
-    - likes
-
-
-## preferential [优惠]
+}
+```
