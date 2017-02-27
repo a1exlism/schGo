@@ -1,0 +1,23 @@
+
+/notes
+/.cache
+/.idea
+
+
+# python
+.pyc
+/sgo/__pycache__
+.ipynb
+
+# Flask stuff:
+/sgo/instance/
+
+
+.webassets-cache
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# celery beat schedule file
+celerybeat-schedule
+
