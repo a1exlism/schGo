@@ -8,49 +8,50 @@ class BadRequest(HTTPException): 400
 
 user_id: 5 - 16
 
-/auth/login
+/auth/login                                     (ok)
     POST    登录
 
-/users
+/users                                          ()
     GET     查询用户
     POST    用户注册, 用户连接
     
-/users/me
+/users/me                                       (ok)
     GET     根据 session_token 查询用户
     
-/users/<user_id>
+/users/<user_id>                                ()
     GET     获取用户
     PUT     更新用户, 用户连接
+        request should contain most of the fields 
     
-/users/<user_id>/refresh_session_token
+/users/<user_id>/refresh_session_token          (x)
     PUT
     
-/users/<user_id>/update_pw
+/users/<user_id>/update_pw                      (ok)
     PUT
 
-/tasks
+/tasks                                          ()
     GET     查询任务
     POST    发布任务
 
-/tasks/<task_id>
+/tasks/<task_id>                                ()
     GET     获取任务
     PUT     更新任务
 
-/products/<product_id>
+/products/<product_id>                          ()
     GET
     PUT
     
-/products
+/products                                       ()
     GET
     POST
 
 
-/rtm/messages
+/rtm/messages                                   ()
     POST
 
-/media/
+/media/                                         ()
     
-/lbs
+/lbs                                            ()
 
 
 ```

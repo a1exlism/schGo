@@ -47,6 +47,10 @@ class User(BaseModel):
                 args.append(_)
         return args
 
+    def to_doc(self, user):
+        if self.doc:
+            raise ValueError
+
 
 class Followers(BaseModel):
     MOD = {

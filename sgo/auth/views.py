@@ -27,6 +27,17 @@ def login():
         return jsonify(flag=flag, token=token)
 
 
+@auth.route('/<user_id>/refresh_session_token', methods=['PUT'])
+def refresh_session_token(user_id):
+    """
+    PUT:    as the function name
+    :param user_id:
+    :return:
+    """
+    if request.method == 'PUT':
+        return jsonify(flag=0, new_token='new token')
+
+
 # @token_auth.verify_token
 # TODO: uncomment this when deploy
 def verify_token(token):

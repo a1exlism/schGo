@@ -17,10 +17,17 @@ class TestDatabase():
             clear_tasks(db)
             clear_products(db)
 
+    def test_db_utils(self, db):
+        pass
+
 
 def test_db(db):
+    from collections import Iterable
     users = db.users.find()
-    assert users
+    if iter(users):
+        print('iterable')
+    print(users.count())
+    print(isinstance(users, Iterable))
 
 
 def init_users(db):
