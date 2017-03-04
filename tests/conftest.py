@@ -4,6 +4,16 @@ import pytest
 
 
 @pytest.fixture(scope='session')
+def base_dir():
+    """ Get Project Base Directory
+    :return: /.../sgo_python
+    """
+    import os
+    print(os.getcwd())
+    return os.getcwd()
+
+
+@pytest.fixture(scope='session')
 def app(request):
     from sgo import create_app
     from sgo.config import TestConfig

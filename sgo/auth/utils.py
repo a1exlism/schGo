@@ -45,4 +45,3 @@ def timestamp():
     :return: int, seconds since epoch
     """
     return time.time()
-

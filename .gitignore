@@ -1,4 +1,5 @@
 
+# sgo
 /notes
 /.cache
 /.idea
@@ -6,18 +7,27 @@
 
 # python
 .pyc
-/sgo/__pycache__
-.ipynb
 
 # Flask stuff:
-/sgo/instance/
+/sgo/instance/config.py
 
 
 .webassets-cache
 
 # Jupyter Notebook
 .ipynb_checkpoints
+.ipynb
 
 # celery beat schedule file
 celerybeat-schedule
 
+sgo/__pycache__/
+sgo/auth/__pycache__/
+sgo/lbs/__pycache__/
+sgo/media/__pycache__/
+sgo/rtm/__pycache__/
+sgo/static/pics/
+sgo/store/__pycache__/
+sgo/user/__pycache__/
+sgo/views/__pycache__/
+tests/__pycache__/

@@ -9,10 +9,9 @@ from bson import json_util
 
 # extensions
 from sgo.extensions import (
-    api, admin_interface, bcrypt, pm,
+    admin_interface, bcrypt, pm,
     token_auth, jwt_token, jwt_refresh
 )
-from flask_restful import Resource, Api
 from flask_admin.contrib.pymongo import ModelView
 
 # modules
@@ -37,10 +36,6 @@ def create_app(config=BaseConfig):
     # especially flask_restful
     register_blueprints(app)
     register_errorhandlers(app)
-
-    @app.route('/test')
-    def test_db():
-        return 'Hello from test'
 
     @app.route('/show_db')
     def show_db():
@@ -70,69 +65,7 @@ def create_app(config=BaseConfig):
             return True
         return False
 
-    def allowed_file(filename):
-        return '.' in filename and \
-               filename.rsplit('.', 1)[
-                   1].lower() in BaseConfig.PIC_ALLOWED_EXTENSIONS
-
-    # @app.route('/file', methods=['GET', 'POST'])
-    def upload_file_me():
-        if request.method == 'POST':
-            file = request.files['file']
-            if not file:
-                print('No file part')
-                return 'no file part'
-            # if user does not select file, browser alse
-            # submit a empty part without filename
-            if file.filename == '':
-                print('No selected file')
-                return 'no selected file'
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                return 'file {} uploaded'.format(filename)
-        elif request.method == 'GET':
-            return 'method not allowed'
-
-    @app.route('/file', methods=['GET', 'POST'])
-    def upload_file():
-        from flask import flash
-        if request.method == 'POST':
-            # check if the post request has the file part
-            if 'file' not in request.files:
-                flash('No file part')
-                return redirect(request.url)
-            file = request.files['file']
-            # if user does not select file, browser also
-            # submit a empty part without filename
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                return redirect(url_for('static',
-                                        filename=filename))
-        return '''
-        <!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-          <p><input type=file name=file>
-             <input type=submit value=Upload>
-        </form>
-        '''
-
     return app
-
-
-def register_apis():
-    # api from modules
-    user_api = Api(user)
-    register_user_apis(user_api)
-
-    store_api = Api(store)
-    register_user_apis(store_api)
 
 
 def register_db():
@@ -149,9 +82,6 @@ def init_admin(admin):
 
 
 def register_extensions(app):
-    register_apis()
-    api.init_app(app)
-
     bcrypt.init_app(app)
 
     pm.init_app(app, config_prefix=BaseConfig.PYMONGO_CONFIG_PREFIX)
@@ -165,7 +95,7 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    app.register_blueprint(user, url_prefix='/user')
+    app.register_blueprint(user, url_prefix='/users')
 
     app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(store)

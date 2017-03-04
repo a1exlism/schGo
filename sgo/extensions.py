@@ -2,10 +2,7 @@
 """ Add flask extensions here
 """
 
-from flask_restful import Api
 from sgo.config import BaseConfig
-
-api = Api()
 
 from flask_admin import Admin
 

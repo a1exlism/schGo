@@ -1,41 +1,59 @@
 # -*- coding: utf-8 -*-
 
 from flask import (
-    request, redirect, url_for, g, session
+    request, redirect, url_for, g, session, jsonify
 )
 
-from flask_restful import Resource, Api
-from flask import jsonify, json
-from bson import json_util
+# utils
+from sgo.views.utils import b2json
 
 # extensions
 from sgo.extensions import pm
 
 # modules
 from sgo.user.models import User as UserModel
+from sgo.user import user
 
 
-class User(Resource):
-    def get(self):
-        user = pm.db.users.find()
-        return jsonify(json.loads(json_util.dumps(user)))
+@user.route('/', methods=['GET', 'POST'])
+def user_index():
+    if request.method == 'GET':
+        name = request.args.get('name')
+        school = request.args.get('school')
+        return jsonify(name=name, school=school)
+    elif request.method == 'POST':
+        return 'resp from post'
 
 
-class TestUser(Resource):
-    """Test api class
-
-    """
-    user_doc = UserModel()
-
-    def get(self):
-        users = pm.db.users.find({'name': 'kitty'})
-        return jsonify(json.loads(json_util.dumps(users)))
-
-
-class TestLogin(Resource):
-    pass
+@user.route('/<user_id>', methods=['GET', 'POST', 'PUT'])
+def user_specific(user_id):
+    if request.method == 'GET':
+        return 'resp from get, ' + user_id
+    elif request.method == 'POST':
+        return 'resp from post, ' + user_id
+    elif request.method == 'PUT':
+        return 'resp from put, ' + user_id
 
 
-def register_user_apis(api):
-    api.add_resource(User, '/')
-    api.add_resource(TestUser, '/test_user')
+@user.route('/me')
+def user_me():
+    if request.method == 'GET':
+        return 'resp from get'
+
+
+@user.route('/<user_id>/refresh_session_token')
+def refresh_session_token(user_id):
+    if request.method == 'PUT':
+        return 'user refresh token, ' + user_id
+
+
+@user.route('/<user_id>/update_pw')
+def update_pw(user_id):
+    if request.method == 'PUT':
+        return 'resp from put, ' + user_id
+
+
+@user.route('/login')
+def user_login():
+    if request.method == 'POST':
+        return 'resp from user_login post'

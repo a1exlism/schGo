@@ -41,7 +41,7 @@ class BaseConfig(object):
 
     "file uploads"
     # TODO: change this when deploy
-    UPLOAD_FOLDER = os.path.join(BASEDIR, 'sgo', 'static')
+    UPLOAD_FOLDER = os.path.join(BASEDIR, 'sgo', 'media_storage')
     PIC_ALLOWED_EXTENSIONS = ('jpg', 'jpeg', 'png', 'bmp')
 
 

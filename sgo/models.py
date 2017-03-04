@@ -24,8 +24,8 @@ class BaseModel(metaclass=ModelMeta):
     Assume: item is not set type
 
     """
-    doc = {}
     MOD = {}
+    doc = {}
 
     def check(self):
         """
@@ -33,3 +33,6 @@ class BaseModel(metaclass=ModelMeta):
         :return: True or False
         """
         check_dict(self.doc, self.MOD)
+
+    def req_args(self):
+        return NotImplemented
