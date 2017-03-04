@@ -8,6 +8,9 @@ class BadRequest(HTTPException): 400
 
 user_id: 5 - 16
 
+/auth/login
+    POST    登录
+
 /users
     GET     查询用户
     POST    用户注册, 用户连接

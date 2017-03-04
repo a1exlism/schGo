@@ -4,6 +4,10 @@
 
 from sgo.config import BaseConfig
 
+from redis import Redis
+
+rc = Redis(decode_responses=True, db=0)
+
 from flask_admin import Admin
 
 admin_interface = Admin(name=BaseConfig.SITE_NAME, template_mode='bootstrap3')

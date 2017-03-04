@@ -14,6 +14,11 @@ from sgo.store.models import Product as ProductModel
 
 @store.route('/tasks', methods=['GET', 'POST'])
 def tasks_index():
+    """
+    GET:    search tasks
+    POST:   publish task
+    :return:
+    """
     if request.method == 'GET':
         return 'resp from get'
     elif request.method == 'POST':
@@ -22,6 +27,12 @@ def tasks_index():
 
 @store.route('/tasks/<task_id>', methods=['GET', 'PUT'])
 def tasks_specific(task_id):
+    """
+    GET:    get task by id
+    PUT:    update task by id
+    :param task_id:
+    :return:
+    """
     if request.method == 'GET':
         return 'resp from get, ' + task_id
     elif request.method == 'PUT':
@@ -30,6 +41,11 @@ def tasks_specific(task_id):
 
 @store.route('/products', methods=['GET', 'POST'])
 def products_index():
+    """
+    GET:    search products
+    POST:   publish products
+    :return:
+    """
     if request.method == 'GET':
         return 'resp from get'
     elif request.method == 'POST':
@@ -38,6 +54,12 @@ def products_index():
 
 @store.route('/products/<product_id>', methods=['GET', 'PUT'])
 def products_specific(product_id):
+    """
+    GET:    get product by id
+    PUT:    update product by id
+    :param product_id:
+    :return:
+    """
     if request.method == 'GET':
         return 'resp from get, ' + product_id
     elif request.method == 'PUT':

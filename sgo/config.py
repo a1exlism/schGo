@@ -36,7 +36,8 @@ class BaseConfig(object):
     TOKEN_SECRET_KEY = config.TOKEN_SECRET_KEY_INSTANCE
     TOKEN_REFRESH_KEY = config.TOKEN_REFRESH_KEY_INSTANCE
     # in seconds
-    TOKEN_EXPIRES_TIME = 3600
+    TOKEN_EXPIRES_TIME = 3600 * 24 * 365
+    # TODO: add token refresh
     TOKEN_REFRESH_EXPIRES_TIME = 15
 
     "file uploads"

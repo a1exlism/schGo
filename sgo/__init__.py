@@ -1,22 +1,19 @@
 from flask import (
     Flask, request, jsonify, json, g, session, redirect,
-    url_for,
 )
-from werkzeug.utils import secure_filename
-import os
 from sgo.config import BaseConfig, DevConfig
 from bson import json_util
 
 # extensions
 from sgo.extensions import (
     admin_interface, bcrypt, pm,
-    token_auth, jwt_token, jwt_refresh
+    token_auth, jwt_token, jwt_refresh,
+    rc,
 )
 from flask_admin.contrib.pymongo import ModelView
 
 # modules
 from sgo.user import user
-from sgo.user.views import register_user_apis
 from sgo.auth import auth
 from sgo.store import store
 from sgo.lbs import lbs
@@ -37,33 +34,22 @@ def create_app(config=BaseConfig):
     register_blueprints(app)
     register_errorhandlers(app)
 
+    @app.route('/test_redis')
+    def test_redis():
+        rc.flushdb()
+        rc.rpush('a', '1')
+        rc.rpush('a', '2')
+        return jsonify(key=rc.lrange('a', 0, -1))
+
     @app.route('/show_db')
     def show_db():
         users = pm.db.users.find({'name': '绯村剑心'})
         return json_util.dumps(users)
 
-    users = ['john', 'susan']
-    for user in users:
-        token = jwt_token.dumps({'username': user})
-        print('*** token for {}: {}\n'.format(user, token))
-
     @app.route('/test_token')
     @token_auth.login_required
     def test_token():
         return 'Hello, %s' % g.current_user
-
-    @token_auth.verify_token
-    def verify_token(token):
-        g.current_user = None
-        try:
-            data = jwt_token.loads(token)
-            print(data)
-        except:
-            return False
-        if 'username' in data:
-            g.current_user = data['username']
-            return True
-        return False
 
     return app
 
@@ -83,11 +69,9 @@ def init_admin(admin):
 
 def register_extensions(app):
     bcrypt.init_app(app)
-
     pm.init_app(app, config_prefix=BaseConfig.PYMONGO_CONFIG_PREFIX)
 
     admin_interface.init_app(app)
-
     with app.app_context():
         # within this block, current_app points to app.
         register_db()
@@ -96,7 +80,6 @@ def register_extensions(app):
 
 def register_blueprints(app):
     app.register_blueprint(user, url_prefix='/users')
-
     app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(store)
     app.register_blueprint(lbs, url_prefix='/lbs')
@@ -109,4 +92,5 @@ def register_errorhandlers(app):
 
 
 if __name__ == '__main__':
+    # TODO: switch when deploy
     create_app(DevConfig).run()

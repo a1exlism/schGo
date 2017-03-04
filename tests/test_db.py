@@ -7,7 +7,7 @@ from sgo.store.models import Task, Product
 @pytest.mark.usefixtures('db')
 class TestDatabase():
     def test_users(self, db):
-        mode = 'creat'
+        mode = 'create'
         if mode == 'create':
             init_users(db)
             init_tasks(db)
