@@ -9,7 +9,7 @@
 .pyc
 
 # Flask stuff:
-/sgo/instance/config.py
+/sgo/instance
 
 
 .webassets-cache

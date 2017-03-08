@@ -27,7 +27,7 @@ class TestSGO(object):
         assert resp
 
 
-def test_chech_list():
+def test_check_list():
     ori = {
         'params': {
             'key_1': 'value_1',
@@ -54,4 +54,4 @@ def test_chech_list():
         ]
     }
     from sgo.utils import check_dict
-    assert not check_dict(test, ori)
+    assert check_dict(test, ori) is False, 'check_dict not work'
