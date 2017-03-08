@@ -4,7 +4,7 @@ from sgo.models import BaseModel
 
 
 class Task(BaseModel):
-    MOD = {
+    _MOD = {
         "place": "",
         "publisher": {
             "id": "",
@@ -31,7 +31,7 @@ class Task(BaseModel):
 
 
 class Product(BaseModel):
-    MOD = {
+    _MOD = {
         "publisher": {
             "id": "",
             "name": "",

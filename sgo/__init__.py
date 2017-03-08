@@ -10,7 +10,6 @@ from sgo.extensions import (
     token_auth, jwt_token, jwt_refresh,
     rc,
 )
-from flask_admin.contrib.pymongo import ModelView
 
 # modules
 from sgo.user import user
@@ -90,7 +89,3 @@ def register_blueprints(app):
 def register_errorhandlers(app):
     pass
 
-
-if __name__ == '__main__':
-    # TODO: switch when deploy
-    create_app(DevConfig).run()

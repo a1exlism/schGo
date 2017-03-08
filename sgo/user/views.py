@@ -14,19 +14,7 @@ from sgo.extensions import pm, token_auth
 # modules
 from sgo.user.models import User as UserModel
 from sgo.user import user
-
-
-def db2resp(src, ban_list=list()):
-    db_json = json.loads(json_util.dumps(src))
-    resp_dict = dict(filter(lambda _: _[0] not in ban_list, db_json.items()))
-    return resp_dict
-
-
-def db2resp_multi(src, ban_list=list()):
-    resp_list = []
-    if iter(src):
-        resp_list = [db2resp(_, ban_list) for _ in src]
-    return resp_list
+from sgo.utils import db2dict, db2dict_multi
 
 
 def check_id(user_id):
@@ -41,16 +29,16 @@ def user_index():
     POST:   user register
     :return:
     """
-    ban_list = [
+    ban_dct = {
         'pw', 'email', 'phone',
         'qq', 'weibo', 'wechat', 'balance', 'credit', 'tasks'
-    ]
+    }
 
     if request.method == 'GET':
         name = request.args.get('name')
         if name:
             u = pm.db.users.find({'name': name})
-            user_list = db2resp_multi(u, ban_list)
+            user_list = db2dict_multi(u, ban_dct)
             return jsonify(flag=1, data=user_list)
         else:
             return jsonify(flag=0, msg='user not find')
@@ -71,7 +59,6 @@ def user_index():
                 return jsonify(flag=0, msg='user %s ready exist.')
             pm.db.users.insert_one(u.doc)
             return jsonify(flag=0, msg='register success.')
-        return jsonify(flag=0)
 
 
 @user.route('/<user_id>', methods=['GET', 'PUT'])
@@ -83,14 +70,14 @@ def user_specific(user_id):
     :param user_id:
     :return:
     """
-    ban_list = ['pw', 'email', 'phone',
+    ban_dct = ['pw', 'email', 'phone',
                 'qq', 'weibo', 'wechat', 'balance', 'credit', 'tasks']
     if request.method == 'GET':
         if user_id != g.current_user:
             return jsonify(flag=0, msg='user do not match')
         if user_id:
             u = pm.db.users.find({'id': user_id})
-            resp = db2resp(u, ban_list)
+            resp = db2dict(u, ban_dct)
             return jsonify(flag=1, data=resp)
         else:
             return jsonify(flag=0, msg='user do not exist.')
@@ -139,7 +126,7 @@ def user_me():
     GET:    get current user by session token
     :return:
     """
-    ban_list = ['pw']
+    ban_dct = ['pw']
     if request.method == 'GET':
         try:
             user_id = g.current_user
@@ -147,7 +134,7 @@ def user_me():
             return jsonify(flag=0)
         else:
             u = pm.db.users.find_one({'id': user_id})
-            resp_dict = db2resp(u, ban_list)
+            resp_dict = db2dict(u, ban_dct)
             return jsonify(flag=1, data=resp_dict)
 
 

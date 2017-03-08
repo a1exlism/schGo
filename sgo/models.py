@@ -5,14 +5,15 @@ from sgo.utils import check_dict
 
 
 class ModelMeta(type):
-    def __init__(cls, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if 'doc' in kwargs:
-            cls.doc = kwargs['doc']
-        elif isinstance(cls.MOD, dict):
-            cls.doc = cls.MOD
-        else:
-            raise AttributeError
+    pass
+    # def __init__(cls, *args, **kwargs):
+    #     if 'doc' in kwargs:
+    #         cls.doc = kwargs['doc']
+    #     elif isinstance(cls._MOD, dict):
+    #         cls.doc = cls._MOD
+    #     else:
+    #         cls.doc = None
+    #     super().__init__(*args, **kwargs)
 
 
 class BaseModel(metaclass=ModelMeta):
@@ -24,15 +25,25 @@ class BaseModel(metaclass=ModelMeta):
     Assume: item is not set type
 
     """
-    MOD = {}
-    doc = {}
+    _MOD = {}
+
+    def __init__(self, *args, **kwargs):
+        if 'doc' in kwargs:
+            self.doc = kwargs['doc']
+        elif isinstance(self._MOD, dict):
+            self.doc = self._MOD.copy()
+        else:
+            self.doc = {}
 
     def check(self):
         """
         check all key in self.doc also in self.MOD recursively
         :return: True or False
         """
-        check_dict(self.doc, self.MOD)
+        if self.doc:
+            check_dict(self.doc, self._MOD)
+        else:
+            raise AttributeError
 
     def req_args(self):
         return NotImplemented

@@ -4,12 +4,14 @@ from flask import request, jsonify, json
 from bson import json_util
 
 # extensions
-from sgo.extensions import pm
+from sgo.extensions import pm, token_auth
 
 # modules
+from sgo.auth.views import is_login
 from sgo.store import store
 from sgo.store.models import Task as TaskModel
 from sgo.store.models import Product as ProductModel
+from sgo.utils import db2dict, db2dict_multi
 
 
 @store.route('/tasks', methods=['GET', 'POST'])
@@ -20,9 +22,15 @@ def tasks_index():
     :return:
     """
     if request.method == 'GET':
-        return 'resp from get'
+        kw = request.args.get('kw')
+        return 'task resp for get'
+
     elif request.method == 'POST':
-        return 'resp from post'
+
+        if not is_login():
+            return jsonify(flag=0, msg='you are not login')
+
+        place = request.form['place']
 
 
 @store.route('/tasks/<task_id>', methods=['GET', 'PUT'])
@@ -34,7 +42,10 @@ def tasks_specific(task_id):
     :return:
     """
     if request.method == 'GET':
-        return 'resp from get, ' + task_id
+        t_list = pm.db.tasks.find()
+        task_id = db2dict_multi(t_list)[0].get('_id')
+        t = pm.db.tasks.find_one({'_id': task_id})
+        return jsonify(flag=1, id=task_id)
     elif request.method == 'PUT':
         return 'resp from put, ' + task_id
 
@@ -47,8 +58,11 @@ def products_index():
     :return:
     """
     if request.method == 'GET':
+        kw = request.args.get('kw')
         return 'resp from get'
     elif request.method == 'POST':
+        if not is_login():
+            return jsonify(flag=0, msg='you are not login')
         return 'resp from post'
 
 

@@ -1,6 +1,28 @@
 # -*- coding: utf-8 -*-
+
+# flask
+from flask import json
+
+# utils
 from datetime import datetime
-from flask import flash, request, url_for
+from bson import json_util
+
+
+def db2dict(src, ban_dct=None):
+    if not ban_dct:
+        ban_dct = {}
+    db_json = json.loads(json_util.dumps(src))
+    resp_dict = dict(filter(lambda _: _[0] not in ban_dct, db_json.items()))
+    return resp_dict
+
+
+def db2dict_multi(src, ban_dct=None):
+    resp_list = []
+    if not ban_dct:
+        ban_dct = {}
+    if iter(src):
+        resp_list = [db2dict(_, ban_dct) for _ in src]
+    return resp_list
 
 
 def check_dict(test, ori):

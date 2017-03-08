@@ -19,7 +19,7 @@ class User(BaseModel):
     """
     _ban_list = ['pw', 'balance', 'credit', 'tasks']
 
-    MOD = {
+    _MOD = {
         "id": "",  # unique and pretty
         "pw": "",
         "name": "",
@@ -42,7 +42,7 @@ class User(BaseModel):
         which would be used in views
         """
         args = []
-        for _ in self.MOD:
+        for _ in self._MOD:
             if _ not in self._ban_list:
                 args.append(_)
         return args
@@ -53,7 +53,7 @@ class User(BaseModel):
 
 
 class Followers(BaseModel):
-    MOD = {
+    _MOD = {
         "idol_id": "",
         "fans_id": ""
     }

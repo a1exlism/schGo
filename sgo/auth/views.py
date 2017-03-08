@@ -38,8 +38,8 @@ def refresh_session_token(user_id):
         return jsonify(flag=0, new_token='new token')
 
 
-# @token_auth.verify_token
 # TODO: uncomment this when deploy
+# @token_auth.verify_token
 def verify_token(token):
     """
     Get Token From 'Authorization' in Header
@@ -61,4 +61,9 @@ def verify_token(token):
 @token_auth.verify_token
 def verify_token_dev(token):
     g.current_user = 'test_user'
+    return True
+
+
+@token_auth.login_required
+def is_login():
     return True
