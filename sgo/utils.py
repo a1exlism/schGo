@@ -61,6 +61,7 @@ def timeago(time=False):
     Get a datetime object or a int() Epoch timestamp and return a pretty string
     like 'an hour ago', 'Yesterday', '3 months ago', 'just now', etc
     """
+
     now = datetime.now()
     time = time.replace(tzinfo=None)
     if type(time) is int:
