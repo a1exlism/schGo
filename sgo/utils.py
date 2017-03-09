@@ -40,23 +40,18 @@ def check_dict(test, ori):
     for _ in test:
         if _ not in ori:
             return False
-
         if isinstance(test[_], dict):
             flag = check_dict(test[_], ori[_])
-
-            # return immediately, otherwise flag would be over written
-            if flag is False:
-                break
         elif isinstance(test[_], list):
             for item in test[_]:
                 # assume ori[_] is list type now
                 if isinstance(item, dict):
                     flag = check_dict(item, ori[_][0])
-
-                    if flag is False:
-                        break
         elif isinstance(test[_], set):
             raise TypeError
+        # return immediately, otherwise flag would be over written
+        if flag is False:
+            break
     return flag
 
 
