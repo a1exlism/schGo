@@ -63,7 +63,7 @@ def init_tasks(db):
 
     if not coll.find_one():
         test_task = Task()
-        test_task.doc['publisher']['id'] = test_user['_id']
+        test_task.doc['publisher']['id'] = test_user.get('_id')
         coll.insert_one(test_task.doc)
 
 
@@ -73,7 +73,7 @@ def init_product(db):
 
     if not coll.find_one():
         test_product = Product()
-        test_product.doc['publisher']['id'] = test_user['_id']
+        test_product.doc['publisher']['id'] = test_user.get('_id')
         coll.insert_one(test_product.doc)
 
 
@@ -90,3 +90,6 @@ def clear_tasks(db):
 def clear_products(db):
     coll = db.products
     coll.delete_many({})
+
+
+

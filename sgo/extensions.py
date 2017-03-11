@@ -8,9 +8,9 @@ from redis import Redis
 
 rc = Redis(decode_responses=True, db=0)
 
-from flask_admin import Admin
+from flask_login import LoginManager
 
-admin_interface = Admin(name=BaseConfig.SITE_NAME, template_mode='bootstrap3')
+login_manager = LoginManager()
 
 from flask_bcrypt import Bcrypt
 
@@ -19,6 +19,12 @@ bcrypt = Bcrypt()
 from flask_pymongo import PyMongo
 
 pm = PyMongo()
+
+from flask_admin import Admin
+from sgo.views.admin_views import SgoAdminIndexView
+
+admin_interface = Admin(name=BaseConfig.SITE_NAME, template_mode='bootstrap3',
+                        index_view=SgoAdminIndexView())
 
 from flask_httpauth import HTTPTokenAuth
 

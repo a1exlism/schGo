@@ -17,7 +17,7 @@ class User(BaseModel):
     > one will be added automatically
 
     """
-    _ban_list = ['pw', 'balance', 'credit', 'tasks']
+    _ban_list = {'pw', 'balance', 'credit', 'tasks'}
 
     _MOD = {
         "id": "",  # unique and pretty

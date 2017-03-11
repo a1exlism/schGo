@@ -3,66 +3,91 @@ class BadRequest(HTTPException): 400
 
 
 - - -
-### draft
-```
+# API draft
 
-user_id: 5 - 16
+## assume
 
-/auth/login                                     (ok)
-    POST    登录
+仅用于演示
 
-/users                                          ()
-    GET     查询用户
-    POST    用户注册, 用户连接
+## intro
+
+* about id
+
+    5 - 16 位, 英文 数字  部分特殊符号
     
-/users/me                                       (ok)
-    GET     根据 session_token 查询用户
+* about token auth
     
-/users/<user_id>                                ()
-    GET     获取用户
-    PUT     更新用户, 用户连接
+    Authorization: sgo_token <your token>
+    
+    tips:   
+    
+    Authorization in Request Header
+   
+    value field begin with 'sgo_token', 
+    then separate with a space, then the token
+    
+    the expire time is set to 100 years for the first edition
+
+* about the response
+
+    if your request success, there MUST be a `flag` key in the returned json
+    
+    else there may be nothing
+    
+    only part of the failed response with `flag` set to integer 1,
+    and a hint `msg` with string
+
+
+- /auth/login
+    - POST    登录
+
+- /users  
+    - GET     查询用户
+    - POST    用户注册, 用户连接
+    
+- /users/me 
+    - GET     根据 session_token 查询用户
+    
+- /users/<user_id>    
+    - GET     获取用户
+    - PUT     更新用户, 用户连接
         request should contain most of the fields 
     
-/users/<user_id>/refresh_session_token          (x)
-    PUT
+- /users/<user_id>/refresh_session_token  
+    - PUT
     
-/users/<user_id>/update_pw                      (ok)
-    PUT
-
-/tasks                                          ()
-    GET     查询任务
-    POST    发布任务
-
-/tasks/<task_id>                                ()
-    GET     获取任务
-    PUT     更新任务
-
-/products/<product_id>                          ()
-    GET
-    PUT
+    <building>
     
-/products                                       ()
-    GET
-    POST
+- /users/<user_id>/update_pw             
+    - PUT
 
+- /tasks                                
+    - GET     查询任务
+    - POST    发布任务
 
-/rtm/messages                                   ()
-    POST
+- /tasks/<task_id>                     
+    - GET     获取任务
+    - PUT     更新任务
 
-/media/                                         ()
+- /products/<product_id>              
+    - GET
+    - PUT
     
-/lbs                                            ()
+- /products                          
+    - GET
+    - POST
 
 
-```
+- /rtm/messages                     
+    - POST
+
+- /media/                            
+    
+- /lbs                              
+
+
 - - -
 # sgo
-
-tips:
-
-if success, flag = '1' is in response
-
-if not success, key 'flag' is omitted
 
 ## Users [/user]
 

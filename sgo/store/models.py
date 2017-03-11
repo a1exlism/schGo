@@ -4,6 +4,7 @@ from sgo.models import BaseModel
 
 
 class Task(BaseModel):
+    _ban_list = {}
     _MOD = {
         "place": "",
         "publisher": {
@@ -15,22 +16,34 @@ class Task(BaseModel):
         "desc": "",
         "reward": 0,
         "pub_time": "",
-        "form": {
+        "form_": {
             "detail": "",
             "landmark": "",
             "campus": "",
             "school": ""
         },
-        "to": {
+        "to_": {
             "detail": "",
             "landmark": "",
             "campus": "",
             "school": ""
-        }
+        },
+        "tags": [],
+        "comments": [
+            {
+                "floor": 0,
+                "author": "",
+                "author_id": "",
+                "datetime": "",
+                "content": "",
+                "likes": 0
+            }
+        ]
     }
 
 
 class Product(BaseModel):
+    _ban_list = {}
     _MOD = {
         "publisher": {
             "id": "",

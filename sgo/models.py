@@ -2,18 +2,11 @@
 models for sgo
 """
 from sgo.utils import check_dict
+from sgo.instance.config import ADMIN_PW
 
 
 class ModelMeta(type):
     pass
-    # def __init__(cls, *args, **kwargs):
-    #     if 'doc' in kwargs:
-    #         cls.doc = kwargs['doc']
-    #     elif isinstance(cls._MOD, dict):
-    #         cls.doc = cls._MOD
-    #     else:
-    #         cls.doc = None
-    #     super().__init__(*args, **kwargs)
 
 
 class BaseModel(metaclass=ModelMeta):
@@ -47,3 +40,26 @@ class BaseModel(metaclass=ModelMeta):
 
     def req_args(self):
         return NotImplemented
+
+
+class Admin:
+    def __init__(self):
+        self.id = 'jesus'
+        self.password = ADMIN_PW
+
+    # flask_login integration
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+    # Required for flask-login interface
+    def __str__(self):
+        return self.id

@@ -29,5 +29,4 @@ sgo/rtm/__pycache__/
 sgo/static/pics/
 sgo/store/__pycache__/
 sgo/user/__pycache__/
-sgo/views/__pycache__/
 tests/__pycache__/

@@ -1,13 +1,15 @@
+# flask
 from flask import (
     Flask, request, jsonify, json, g, session, redirect,
+    render_template
 )
 from sgo.config import BaseConfig, DevConfig
 from bson import json_util
 
 # extensions
 from sgo.extensions import (
-    admin_interface, bcrypt, pm,
-    token_auth, jwt_token, jwt_refresh,
+    login_manager, bcrypt, admin_interface,
+    pm, token_auth, jwt_token, jwt_refresh,
     rc,
 )
 
@@ -18,9 +20,8 @@ from sgo.store import store
 from sgo.lbs import lbs
 from sgo.rtm import rtm
 from sgo.media import media
-
-# admin views
-from sgo.views.admin_views import UserView, TaskView, ProductView
+from sgo.views.admin_views import init_admin_views
+from sgo.models import Admin as AdminModel
 
 
 def create_app(config=BaseConfig):
@@ -28,10 +29,12 @@ def create_app(config=BaseConfig):
     app.config.from_object(config)
 
     register_extensions(app)
-    # register extensions before blueprints
-    # especially flask_restful
     register_blueprints(app)
     register_errorhandlers(app)
+
+    @app.route('/', methods=['GET'])
+    def index():
+        return render_template('index.html')
 
     @app.route('/test_redis')
     def test_redis():
@@ -50,31 +53,43 @@ def create_app(config=BaseConfig):
     def test_token():
         return 'Hello, %s' % g.current_user
 
+
     return app
 
 
-def register_db():
-    db = getattr(g, '_database', None)
+def globalize_db(conn):
+    """Called in register_extensions
+    :return: db instance
+    """
+    db = getattr(g, 'database', None)
     if db is None:
-        g._database = pm
+        g.database = conn
     return db
 
 
-def init_admin(admin):
-    admin.add_view(UserView(pm.db.users))
-    admin.add_view(TaskView(pm.db.tasks))
-    admin.add_view(ProductView(pm.db.products))
-
-
 def register_extensions(app):
+    # flask-bcrypt
     bcrypt.init_app(app)
+
+    # pymongo
     pm.init_app(app, config_prefix=BaseConfig.PYMONGO_CONFIG_PREFIX)
 
+    # flask-login
+    login_manager.init_app(app)
+
+    # sgo_admin
     admin_interface.init_app(app)
+
+    @login_manager.user_loader
+    def load_admin(id):
+        admin = getattr(g, 'admin', None)
+        if admin is None:
+            g.admin = AdminModel()
+        return g.admin
+
     with app.app_context():
-        # within this block, current_app points to app.
-        register_db()
-        init_admin(admin_interface)
+        globalize_db(pm)
+        init_admin_views(admin_interface)
 
 
 def register_blueprints(app):
@@ -88,4 +103,3 @@ def register_blueprints(app):
 
 def register_errorhandlers(app):
     pass
-

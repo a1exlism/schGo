@@ -14,12 +14,9 @@ from sgo.extensions import pm, token_auth
 # modules
 from sgo.user.models import User as UserModel
 from sgo.user import user
-from sgo.utils import db2dict, db2dict_multi
-
-
-def check_id(user_id):
-    if len(user_id) > 16 or len(user_id) < 6:
-        return False
+from sgo.utils import (
+    db2dict, db2dict_multi, check_id
+)
 
 
 @user.route('', methods=['GET', 'POST'])
@@ -71,7 +68,7 @@ def user_specific(user_id):
     :return:
     """
     ban_dct = ['pw', 'email', 'phone',
-                'qq', 'weibo', 'wechat', 'balance', 'credit', 'tasks']
+               'qq', 'weibo', 'wechat', 'balance', 'credit', 'tasks']
     if request.method == 'GET':
         if user_id != g.current_user:
             return jsonify(flag=0, msg='user do not match')

@@ -5,7 +5,7 @@ from flask import json
 
 # utils
 from datetime import datetime
-from bson import json_util
+from bson import json_util, ObjectId
 
 
 def db2dict(src, ban_dct=None):
@@ -23,6 +23,21 @@ def db2dict_multi(src, ban_dct=None):
     if iter(src):
         resp_list = [db2dict(_, ban_dct) for _ in src]
     return resp_list
+
+
+_white_list_str = 'abcdefghijklmnopqrstuvwxyz' + \
+                  'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + \
+                  '1234567890' + '_'
+_UID_WHITE_LIST = {_ for _ in _white_list_str}
+
+
+def check_id(user_id):
+    if len(user_id) > 16 or len(user_id) < 6:
+        return False
+    for _ in set(user_id):
+        if _ not in _UID_WHITE_LIST:
+            return False
+    return True
 
 
 def check_dict(test, ori):
