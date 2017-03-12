@@ -1,0 +1,13 @@
+# base
+flask
+flask_pymongo
+flask_login
+flask_bcrypt
+flask_admin
+flask_httpauth
+redis
+cryptography
+
+# dev
+pytest
+docker-compose

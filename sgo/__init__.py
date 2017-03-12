@@ -1,7 +1,10 @@
+"""
+Stem of SGO
+"""
 # flask
 from flask import (
     Flask, request, jsonify, json, g, session, redirect,
-    render_template
+    render_template, url_for,
 )
 from sgo.config import BaseConfig, DevConfig
 from bson import json_util
@@ -45,7 +48,7 @@ def create_app(config=BaseConfig):
 
     @app.route('/show_db')
     def show_db():
-        users = pm.db.users.find({'name': '绯村剑心'})
+        users = pm.db.users.find({'name': '裴仲'})
         return json_util.dumps(users)
 
     @app.route('/test_token')
@@ -53,6 +56,14 @@ def create_app(config=BaseConfig):
     def test_token():
         return 'Hello, %s' % g.current_user
 
+    @app.route('/test_file/<path:filename>')
+    def get_upload(filename):
+        return pm.send_file(filename)
+
+    @app.route('/test_file/<path:filename>', methods=['POST'])
+    def save_upload(filename):
+        pm.save_file(filename, request.files['img'])
+        return redirect(url_for('get_upload', filename=filename))
 
     return app
 

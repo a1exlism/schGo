@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import jsonify, request
+from flask import jsonify, request, g
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 
@@ -16,8 +16,7 @@ PIC_ALLOWED_EXTENSIONS = ('jpg', 'jpeg', 'png', 'bmp')
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[
-               1].lower() in PIC_ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1].lower() in PIC_ALLOWED_EXTENSIONS
 
 
 @media.route('/img', methods=['GET', 'POST'])
@@ -34,3 +33,10 @@ def image_api():
             filename = secure_filename(img.filename)
             img.save(os.path.join(BaseConfig.UPLOAD_FOLDER, filename))
             return jsonify(flag=1, msg='file saved')
+
+
+@media.route('/test_img/<path:filename>', methods=['GET', 'POST'])
+def image_api_mongo(filename):
+    mongo = g.database
+    assert mongo, 'get database failed'
+    return jsonify(flag=1)

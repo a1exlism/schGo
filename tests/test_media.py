@@ -18,4 +18,12 @@ class TestImgUpload():
         print(res.data)
         assert b'saved' in res.data
 
-
+    def test_upload_mongo(self, client, base_dir):
+        import os
+        from io import BytesIO
+        with open(os.path.join(base_dir, 'tests', 'res', 'flux_sq.png'),
+                  'rb') as f:
+            res = client.post('/test_file/flux.png', data={
+                'img': (BytesIO(f.read()), 'flux.png')
+            })
+        print(res.data)

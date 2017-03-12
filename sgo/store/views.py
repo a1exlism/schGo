@@ -31,14 +31,33 @@ def tasks_index():
 
         if not is_login():
             return jsonify(flag=0, msg='you are not login')
-        # place = request.form['place']
-        # publisher_id = g.current_user
-        # desc = request.form['desc']
+        place = request.form['place']
+        publisher_id = g.current_user
+        desc = request.form['desc']
+        reward = request.form['reward']
 
         # dicts
+        # 接受时并不序列化
         from_ = request.form['from']
-        # to_ = request.to['to']
-        return jsonify(from_=from_)
+        to_ = request.form['to']
+
+        if place and from_:
+            t = TaskModel()
+            publisher = pm.db.users.find_one({'id': publisher_id})
+            publisher_doc = {
+                'id': publisher_id,
+                'name': publisher['name'],
+                'avatar_url': publisher['avatar_url']
+            }
+
+            t.doc['place'] = place
+            t.doc['publisher'] = publisher_doc
+            t.doc['from_'] = from_
+
+            # 返回时内嵌的 dict 会序列化
+            return jsonify(from_=t.doc['from_'], place=place)
+        else:
+            return jsonify(flag=0, msg='bad request')
 
     @store.route('/tasks/<task_id>', methods=['GET', 'PUT'])
     def tasks_specific(task_id):
@@ -80,6 +99,7 @@ def tasks_index():
         :return:
         """
         if request.method == 'GET':
+
             return 'resp from get, ' + product_id
         elif request.method == 'PUT':
             return 'resp from put, ' + product_id
