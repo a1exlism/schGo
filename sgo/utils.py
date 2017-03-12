@@ -52,8 +52,20 @@ def check_id(user_id):
     return True
 
 
-def check_str(kw):
-    return True
+# TODO: enhance this function
+def clean_str(kw):
+    kw = str(kw)
+    if len(kw) == 0:
+        return False, None
+    return True, kw
+
+
+def add2list(src_list, adder):
+    if isinstance(adder, str):
+        src_list.append(adder)
+    elif iter(adder):
+        src_list.extend(adder)
+    return src_list
 
 
 def check_dict(test, ori):

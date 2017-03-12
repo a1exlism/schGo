@@ -51,10 +51,11 @@ class Product(BaseModel):
             "avatar_url": ""
         },
         "pub_time": "",
+        "price": 0,
         "desc": "",
-        "params": {
-            "pic_url": "",
-            "video_url": "",
+        "pic_url": [],
+        "video_url": [],
+        "info": {
             "views": 0,
             "likes": 0
         },

@@ -90,6 +90,3 @@ def clear_tasks(db):
 def clear_products(db):
     coll = db.products
     coll.delete_many({})
-
-
-

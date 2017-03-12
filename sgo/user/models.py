@@ -34,6 +34,7 @@ class User(BaseModel):
         "balance": 0,
         "credit": 0,
         "tasks": [],
+        "products": []
     }
 
     def req_args(self):
