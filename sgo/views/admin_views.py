@@ -27,7 +27,7 @@ from wtforms import widgets
 from wtforms import form, validators
 from wtforms.fields import (
     Field, StringField, IntegerField, TextAreaField,
-    PasswordField,
+    PasswordField, DateTimeField
 )
 from bson import ObjectId
 
@@ -124,7 +124,7 @@ class UserForm(form.Form):
     wechat = StringField('wechat')
     balance = IntegerField('balance')
     credit = IntegerField('credit')
-    tasks = StringField('tasks')
+    tasks = InlineFieldList(ObjectIdField('tasks'))
 
 
 class UserView(SgoModelView):
@@ -140,39 +140,57 @@ class PublisherEmbed(form.Form):
     avatar_url = StringField('avatar_url')
 
 
+class CommentEmbed(form.Form):
+    floor = IntegerField('floor')
+    author = StringField('author')
+    author_id = ObjectIdField('author_id')
+    content = TextAreaField('content')
+    likes = IntegerField('likes')
+
+
+class TagsEmbed(form.Form):
+    tag = StringField('tag')
+
+
+class ProductParamsEmbed(form.Form):
+    pic_url = InlineFieldList(StringField('pic_url'))
+    video_url = InlineFieldList(StringField('video_url'))
+    views = IntegerField('views')
+    likes = IntegerField('likes')
+
+
 class TaskForm(form.Form):
     place = StringField('place')
+    publisher = InlineFormField(PublisherEmbed)
     receiver_id = StringField('receiver_id')
     desc = StringField('desc')
     reward = IntegerField('reward')
-    pub_time = StringField('pub_time')
+    pub_time = DateTimeField('pub_time')
     # from is builtin keyword
     from_ = StringField('from')
     to = StringField('to')
 
-    publisher = InlineFormField(PublisherEmbed)
+    tags = InlineFieldList(StringField(TagsEmbed))
 
-    # form_list = InlineFieldList(InlineFormField(PublisherEmbed))
+    comments = InlineFieldList(InlineFormField(CommentEmbed))
 
 
 class TaskView(SgoModelView):
-    column_list = ['place',
-                   'publisher',
+    column_list = ['place', 'publisher',
                    'receiver_id', 'desc',
-                   'reward', 'pub_time', 'from_', 'to']
+                   'reward', 'pub_time',
+                   'from_', 'to_', 'tags', 'comments']
 
     form = TaskForm
 
 
 class ProductForm(form.Form):
     publisher = InlineFormField(PublisherEmbed)
-    pub_time = StringField('pub_time')
+    pub_time = DateTimeField('pub_time')
     desc = StringField('desc')
-    params = TextAreaField('params')
-    tags = StringField('tags')
-    comments = TextAreaField('comments')
-
-    # form_list = InlineFieldList(InlineFormField(PublisherEmbed))
+    params = InlineFormField(ProductParamsEmbed)
+    tags = InlineFieldList(StringField(TagsEmbed))
+    comments = InlineFieldList(InlineFormField(CommentEmbed))
 
 
 class ProductView(SgoModelView):

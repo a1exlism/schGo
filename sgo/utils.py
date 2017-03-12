@@ -9,6 +9,12 @@ from bson import json_util, ObjectId
 
 
 def db2dict(src, ban_dct=None):
+    """
+
+    :param src: database result object
+    :param ban_dct: forbidden keys
+    :return:
+    """
     if not ban_dct:
         ban_dct = {}
     db_json = json.loads(json_util.dumps(src))
@@ -17,6 +23,12 @@ def db2dict(src, ban_dct=None):
 
 
 def db2dict_multi(src, ban_dct=None):
+    """
+
+    :param src: database result objects list
+    :param ban_dct: forbidden keys
+    :return:
+    """
     resp_list = []
     if not ban_dct:
         ban_dct = {}
@@ -37,6 +49,10 @@ def check_id(user_id):
     for _ in set(user_id):
         if _ not in _UID_WHITE_LIST:
             return False
+    return True
+
+
+def check_str(kw):
     return True
 
 

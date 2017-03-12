@@ -2,9 +2,6 @@
 
 from flask import request, jsonify, g, json
 
-# utils
-from sgo.utils import db2dict, db2dict_multi
-
 # extensions
 from sgo.extensions import pm, token_auth
 
@@ -14,7 +11,11 @@ from sgo.store import store
 from sgo.store.models import Task as TaskModel
 from sgo.store.models import Product as ProductModel
 
+# utils
+from sgo.utils import db2dict, db2dict_multi
+from datetime import datetime
 
+# TODO: add security filter
 @store.route('/tasks', methods=['GET', 'POST'])
 def tasks_index():
     """
@@ -31,8 +32,8 @@ def tasks_index():
         if len(kw) == 0:
             return jsonify(flag=0, msg="search key error.")
         task_list = pm.db.tasks.find({"$or": [
-            {"desc": "kw"},
-            {"tags": "kw"}
+            {"desc": {"$regex": kw}},
+            {"tags": {"$regex": kw}}
         ]})
         return jsonify(flag=1, data=db2dict_multi(task_list))
 
@@ -47,6 +48,7 @@ def tasks_index():
         if reward < 0:
             return jsonify(flag=0, msg='reward can\'t be negative')
         tags = request.form.get('tags', None)
+        tags_list = tags.lstrip('[').rstrip(']').split(',')
 
         # dicts
         # 接受时并不序列化
@@ -66,8 +68,10 @@ def tasks_index():
             t.doc['publisher'] = publisher_doc
             t.doc['desc'] = desc
             t.doc['reward'] = reward
+            t.doc['pub_time'] = datetime.utcnow()
             t.doc['from_'] = from_
             t.doc['to_'] = to_
+            t.doc['tags'] = tags_list
 
             # 返回时内嵌的 dict 会序列化
             t.id = pm.db.tasks.insert_one(t.doc).inserted_id

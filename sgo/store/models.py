@@ -16,7 +16,7 @@ class Task(BaseModel):
         "desc": "",
         "reward": 0,
         "pub_time": "",
-        "form_": {
+        "from_": {
             "detail": "",
             "landmark": "",
             "campus": "",
