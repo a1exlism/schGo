@@ -81,7 +81,7 @@ class SgoAdminIndexView(AdminIndexView):
     def index(self):
         if not flask_login.current_user.is_authenticated:
             return redirect(url_for('.login_view'))
-        return self.render('index.html')
+        return self.render('admin/index.html')
 
     @expose('/login/', methods=('GET', 'POST'))
     def login_view(self):

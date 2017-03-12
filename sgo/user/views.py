@@ -157,6 +157,5 @@ def update_pw(user_id):
                                             {'$set':
                                                 {
                                                     'pw': new_pw
-                                                }
-                                            })
+                                                }})
             return jsonify(flag=1)

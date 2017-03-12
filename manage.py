@@ -7,11 +7,11 @@ from sgo import create_app, config
 # TODO: switch the config mode when deploy
 app = create_app(config=config.DevConfig)
 
-if __name__ == '__main__':
+
+def run_app():
     with app.app_context():
         app.run(host='0.0.0.0')
 
 
-@app.cli.command()
-def initdb():
-    click.echo('init the db')
+if __name__ == '__main__':
+    run_app()

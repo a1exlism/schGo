@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, jsonify, g
+from flask import request, jsonify, g, json
 
 # utils
 from sgo.utils import db2dict, db2dict_multi
@@ -23,9 +23,18 @@ def tasks_index():
     :return:
     """
     if request.method == 'GET':
+        """
+        Search by key word
+        """
         kw = request.args.get('kw')
-
-        return 'task resp for get'
+        kw = str(kw)
+        if len(kw) == 0:
+            return jsonify(flag=0, msg="search key error.")
+        task_list = pm.db.tasks.find({"$or": [
+            {"desc": "kw"},
+            {"tags": "kw"}
+        ]})
+        return jsonify(flag=1, data=db2dict_multi(task_list))
 
     elif request.method == 'POST':
 
@@ -34,12 +43,15 @@ def tasks_index():
         place = request.form['place']
         publisher_id = g.current_user
         desc = request.form['desc']
-        reward = request.form['reward']
+        reward = int(request.form['reward'])
+        if reward < 0:
+            return jsonify(flag=0, msg='reward can\'t be negative')
+        tags = request.form.get('tags', None)
 
         # dicts
         # 接受时并不序列化
-        from_ = request.form['from']
-        to_ = request.form['to']
+        from_ = json.loads(request.form['from'])
+        to_ = json.loads(request.form['to'])
 
         if place and from_:
             t = TaskModel()
@@ -52,10 +64,20 @@ def tasks_index():
 
             t.doc['place'] = place
             t.doc['publisher'] = publisher_doc
+            t.doc['desc'] = desc
+            t.doc['reward'] = reward
             t.doc['from_'] = from_
+            t.doc['to_'] = to_
 
             # 返回时内嵌的 dict 会序列化
-            return jsonify(from_=t.doc['from_'], place=place)
+            t.id = pm.db.tasks.insert_one(t.doc).inserted_id
+            publisher.get('tasks').append({'id': t.id})
+            pm.db.users.find_one_and_update({'id': publisher_id},
+                                            {'$push':
+                                                {
+                                                    'tasks': t.id
+                                                }})
+            return jsonify(flag=1, from_=str(t.id))
         else:
             return jsonify(flag=0, msg='bad request')
 
