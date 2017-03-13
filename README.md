@@ -33,11 +33,9 @@ then
 
 #### tips
 
-I think it's better to use local python environment
+I think it's better to use local python environment instead of the docker one. 
 
-instead of the docker one. If you think so, you can
-
-comment the flask part in docker-compose.yml out and
+If you think so, you can comment the flask part in docker-compose.yml out and
 
 deploy in virtualenv by following steps:
 
@@ -53,9 +51,11 @@ deploy in virtualenv by following steps:
 
 6. `deactivate` to quit virtualenv
 
-### 0x04 info
+### 0x04 info about container
 
-* app/
+#### flask
+
+* sgo/
 
     the code
     
@@ -66,7 +66,7 @@ deploy in virtualenv by following steps:
 * Dockerfiles/
     - flask
     
-        requirements.txt: a copy of sgo_python/requirements.txt
+        requirements.txt: a copy of sgo_python/requirements-me.txt
         
     - mongod
         
