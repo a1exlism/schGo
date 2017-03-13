@@ -93,10 +93,10 @@ def register_extensions(app):
 
     @login_manager.user_loader
     def load_admin(id):
-        admin = getattr(g, 'admin', None)
-        if admin is None:
-            g.admin = AdminModel()
-        return g.admin
+        # admin = getattr(g, 'admin', None)
+        # if admin is None:
+        #     g.admin = AdminModel()
+        return AdminModel()
 
     with app.app_context():
         globalize_db(pm)

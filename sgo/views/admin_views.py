@@ -62,15 +62,16 @@ class AdminLoginForm(form.Form):
         if admin is None:
             raise validators.ValidationError('Invalid admin')
 
-        if admin.password != admin.password:
+        if self.password.data != admin.password:
             raise validators.ValidationError("Invalid password")
 
     @staticmethod
-    def get_admin():
-        admin = getattr(g, 'admin', None)
-        if admin is None:
-            g.admin = Admin()
-        return g.admin
+    def get_admin(id=None):
+        # admin = getattr(g, 'admin', None)
+        # if admin is None:
+        #     g.admin = Admin()
+        # return g.admin
+        return Admin()
 
 
 class SgoAdminIndexView(AdminIndexView):
@@ -88,7 +89,8 @@ class SgoAdminIndexView(AdminIndexView):
     def login_view(self):
         form = AdminLoginForm(request.form)
         if helpers.validate_form_on_submit(form):
-            admin = form.get_admin()
+            admin = form.get_admin(request.form['username'])
+            form.validate_login(form.password)
             flask_login.login_user(admin)
             flash('Login successfully')
 
@@ -101,6 +103,7 @@ class SgoAdminIndexView(AdminIndexView):
     @expose('/logout/')
     def logout_view(self):
         flask_login.logout_user()
+        g.admin = None
         return redirect(url_for('.index'))
 
 

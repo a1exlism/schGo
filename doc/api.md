@@ -57,7 +57,7 @@ class BadRequest(HTTPException): 400
     - POST    用户注册, 用户连接
 
 - /users/me
-    - GET     根据 session_token 查询用户
+    - GET     根据 token 查询用户
 
 - /users/<user_id>    
     - GET     获取用户
@@ -96,7 +96,6 @@ class BadRequest(HTTPException): 400
 
 - /lbs                              
 
-
 - - -
 # sgo
 
@@ -105,3 +104,23 @@ class BadRequest(HTTPException): 400
 ### get user info [GET]
 
 + Request(application/json)
+
+# Models
+
+in `sgo/user/models.py` and `sgo/store/models.py`
+
+# Apis
+
+in `sgo/user/views.py` and `sgo/store/views.py`
+
+# Auth
+
+in `sgo/auth/views.py`
+
+if deploy, please comment `@token_auth.verify_token`
+
+on `def verify_token_dev(token):`
+
+and uncomment this
+
+on `def verify_token(token):`

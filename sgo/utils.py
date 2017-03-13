@@ -40,7 +40,7 @@ def db2dict_multi(src, ban_dct=None):
 _white_list_str = 'abcdefghijklmnopqrstuvwxyz' + \
                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + \
                   '1234567890' + '_'
-_UID_WHITE_LIST = {_ for _ in _white_list_str}
+_UID_WHITE_LIST = frozenset(_ for _ in _white_list_str)
 
 
 def check_id(user_id):
@@ -55,7 +55,7 @@ def check_id(user_id):
 # TODO: enhance this function
 def clean_str(kw):
     kw = str(kw)
-    if len(kw) == 0:
+    if len(kw) == 0 or '$' in kw:
         return False, None
     return True, kw
 

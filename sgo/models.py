@@ -2,7 +2,7 @@
 models for sgo
 """
 from sgo.utils import check_dict
-from sgo.instance.config import ADMIN_PW
+from sgo.config import BaseConfig
 
 
 class ModelMeta(type):
@@ -45,7 +45,7 @@ class BaseModel(metaclass=ModelMeta):
 class Admin:
     def __init__(self):
         self.id = 'jesus'
-        self.password = ADMIN_PW
+        self.password = BaseConfig.ADMIN_PW
 
     # flask_login integration
     def is_authenticated(self):
@@ -59,6 +59,11 @@ class Admin:
 
     def get_id(self):
         return self.id
+
+    def validate_pw(self, str):
+        if self.password != str:
+            return False
+        return True
 
     # Required for flask-login interface
     def __str__(self):

@@ -19,7 +19,6 @@ from sgo.utils import (
 from datetime import datetime
 
 
-# TODO: add security filter
 @store.route('/tasks', methods=['GET', 'POST'])
 def tasks_index():
     """
@@ -41,6 +40,7 @@ def tasks_index():
         ]})
         return jsonify(flag=1, data=db2dict_multi(task_list))
 
+    # TODO: add transactions
     elif request.method == 'POST':
 
         if not is_login():

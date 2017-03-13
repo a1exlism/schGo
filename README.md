@@ -2,6 +2,7 @@
 
 built with flask + pymongo
 
+# api (doc/api.md)
 
 # Deploy
 
@@ -22,7 +23,35 @@ built with flask + pymongo
     
 ### 0x03 build and run
 
+recommend to install in virtualenv 
+
+`pip install docker-compose`
+
+then
+
 `docker-compose up`
+
+#### tips
+
+I think it's better to use local python environment
+
+instead of the docker one. If you think so, you can
+
+comment the flask part in docker-compose.yml out and
+
+deploy in virtualenv by following steps:
+
+1. `pip3 install virtualenv`
+
+2. `virtualenv -p python3 sgo_venv`
+
+3. `source sgo_venv/bin/activate`
+
+4. `pip install -r requirements`
+
+5. `python manage.py`
+
+6. `deactivate` to quit virtualenv
 
 ### 0x04 info
 

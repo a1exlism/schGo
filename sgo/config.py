@@ -29,6 +29,7 @@ class BaseConfig(object):
 
     # admin white list
     ADMIN_LIST = ['admin']
+    ADMIN_PW = config.ADMIN_PW
 
     "auth module"
     COOKIE_DURATION = timedelta(days=365)

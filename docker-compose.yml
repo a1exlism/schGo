@@ -1,13 +1,13 @@
-#flask:
-#  build: Dockerfiles/flask
-#  volumes:
-#    - .:/app
-#  links:
-#    - mongod
-#  working_dir: /app
-#  ports:
-#    - "5000:5000"
-#  command: /usr/bin/python3 /app/manage.py
+flask:
+  build: Dockerfiles/flask
+  volumes:
+    - .:/app
+  links:
+    - mongod
+  working_dir: /app
+  ports:
+    - "5000:5000"
+  command: /usr/bin/python3 /app/manage.py
 
 mongod:
   build: Dockerfiles/mongod
