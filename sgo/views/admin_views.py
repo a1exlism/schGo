@@ -6,7 +6,7 @@ Based on flask-admin and flask-login
 # flask
 from flask import (
     request, redirect, url_for, flash, g,
-    render_template,
+    render_template, json
 )
 
 # extensions
@@ -29,7 +29,7 @@ from wtforms.fields import (
     Field, StringField, IntegerField, TextAreaField,
     PasswordField, DateTimeField
 )
-from bson import ObjectId
+from bson import ObjectId, json_util
 
 
 class ObjectIdField(Field):
@@ -187,6 +187,14 @@ class TaskView(SgoModelView):
 
     form = TaskForm
 
+    def get_list(self, *args, **kwargs):
+        count, data = super(TaskView, self).get_list(*args, **kwargs)
+        for item in data:
+            item['publisher'] = json.loads(json_util.dumps(item['publisher']))
+            item['comments'] = json.loads(json_util.dumps(item['comments']))
+
+        return count, data
+
 
 class ProductForm(form.Form):
     publisher = InlineFormField(PublisherEmbed)
@@ -202,6 +210,14 @@ class ProductView(SgoModelView):
                    'params', 'tags', 'comments']
 
     form = ProductForm
+
+    def get_list(self, *args, **kwargs):
+        count, data = super(ProductView, self).get_list(*args, **kwargs)
+        for item in data:
+            item['publisher'] = json.loads(json_util.dumps(item['publisher']))
+            item['comments'] = json.loads(json_util.dumps(item['comments']))
+
+        return count, data
 
 
 class AuthenticatedMenuLink(MenuLink):

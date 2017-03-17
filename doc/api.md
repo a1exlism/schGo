@@ -1,7 +1,3 @@
-
-class BadRequest(HTTPException): 400
-
-
 - - -
 # API draft
 
@@ -36,7 +32,6 @@ class BadRequest(HTTPException): 400
 * about the response
 
     if your request success, there MUST be a `flag` key in the returned json
-
     else there may be nothing
 
     only part of the failed response with `flag` set to integer 1,

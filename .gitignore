@@ -1,6 +1,8 @@
 
 # sgo
+## just developers' notes
 /notes
+## no egg use
 /.cache
 /.idea
 
@@ -9,9 +11,11 @@
 *.pyc
 
 # Flask stuff:
+## mainly for Admin PW currently
 /sgo/instance
 
 
+# no egg use blow
 .webassets-cache
 
 # Jupyter Notebook

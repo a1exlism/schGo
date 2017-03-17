@@ -1,6 +1,7 @@
 # base
 flask
 flask_pymongo
+flask_admin
 flask_login
 flask_bcrypt
 flask_httpauth

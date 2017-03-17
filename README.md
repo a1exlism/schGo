@@ -34,9 +34,7 @@ then
 #### tips
 
 I think it's better to use local python environment instead of the docker one. 
-
 If you think so, you can comment the flask part in docker-compose.yml out and
-
 deploy in virtualenv by following steps:
 
 1. `pip3 install virtualenv`

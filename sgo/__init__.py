@@ -65,6 +65,13 @@ def create_app(config=BaseConfig):
         pm.save_file(filename, request.files['img'])
         return redirect(url_for('get_upload', filename=filename))
 
+    @app.route('/init_db_for_test', methods=['GET'])
+    def init_db_for_test():
+        key = request.args.get('key')
+        if key == 'hello':
+            pass
+        return jsonify(flag=1, msg='success')
+
     return app
 
 
