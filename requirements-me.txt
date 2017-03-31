@@ -1,13 +1,26 @@
 # base
+
+## flask
+
 flask
 flask_pymongo
 flask_admin
 flask_login
 flask_bcrypt
 flask_httpauth
+
+## db
 redis
 cryptography
 
 # dev
+
+## test
 pytest
+
+## docker
 docker-compose
+
+## doc
+
+Sphinx
