@@ -19,6 +19,9 @@ class BaseConfig(object):
 
     MONGO_DBNAME = 'schgo'
 
+    # for WTF form
+    WTF_CSRF_ENABLED = True
+
     # for jsonify
     JSON_SORT_KEYS = False
 
@@ -33,7 +36,7 @@ class BaseConfig(object):
 
     "auth module"
     COOKIE_DURATION = timedelta(days=365)
-    TOKEN_AUTH_SCHEME = 'sgo_token'
+    TOKEN_AUTH_SCHEME = 'bearer'
     TOKEN_SECRET_KEY = config.TOKEN_SECRET_KEY_INSTANCE
     TOKEN_REFRESH_KEY = config.TOKEN_REFRESH_KEY_INSTANCE
     # in seconds
@@ -50,7 +53,6 @@ class BaseConfig(object):
 class DevConfig(BaseConfig):
     """Development configuration options"""
     DEBUG = True
-    ASSETS_DEBUG = True
     WTF_CSRF_ENABLED = False
 
 

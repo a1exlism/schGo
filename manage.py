@@ -4,11 +4,10 @@ import click
 # modules
 from sgo import create_app, config
 
-# TODO: switch the config mode when deploy
-app = create_app(config=config.DevConfig)
-
 
 def run_app():
+    # TODO: switch the config mode when deploy
+    app = create_app(config=config.DevConfig)
     with app.app_context():
         app.run(host='0.0.0.0')
 
