@@ -4,5 +4,4 @@ from flask import Blueprint
 
 user = Blueprint('user', __name__)
 
-
-import sgo.user.views
+from ..user import views

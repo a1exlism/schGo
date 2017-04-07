@@ -2,9 +2,9 @@
 """ Add flask extensions here
 """
 
-from sgo.config import BaseConfig
-
 from redis import Redis
+
+from .config import BaseConfig
 
 rc = Redis(decode_responses=True, db=0)
 
@@ -21,7 +21,7 @@ from flask_pymongo import PyMongo
 pm = PyMongo()
 
 from flask_admin import Admin
-from sgo.views.admin_views import SgoAdminIndexView
+from .views.admin_views import SgoAdminIndexView
 
 admin_interface = Admin(name=BaseConfig.SITE_NAME, template_mode='bootstrap3',
                         index_view=SgoAdminIndexView())

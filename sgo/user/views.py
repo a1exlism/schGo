@@ -9,12 +9,12 @@ from flask import (
 from bson import json_util
 
 # extensions
-from sgo.extensions import pm, token_auth
+from ..extensions import pm, token_auth
 
 # modules
-from sgo.user.models import User as UserModel
-from sgo.user import user
-from sgo.utils import (
+from .models import User as UserModel
+from ..user import user
+from ..utils import (
     db2dict, db2dict_multi, check_id
 )
 

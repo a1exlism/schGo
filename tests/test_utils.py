@@ -6,6 +6,11 @@ import pytest
 @pytest.mark.usefixtures('client')
 @pytest.mark.usefixtures('db')
 class TestUrlConverter():
+    def test_url_validater(self):
+        from sgo.utils.validaters import check_url
+        assert check_url('http://www.baidu.com')
+        assert not check_url('ftp://123341')
+
     def test_bson_object_id_converter(self):
         from bson import ObjectId
         from flask.ext.pymongo import BSONObjectIdConverter
@@ -55,3 +60,5 @@ def test_check_list():
     }
     from sgo.utils import check_dict
     assert check_dict(test, ori) is False, 'check_dict not work'
+
+

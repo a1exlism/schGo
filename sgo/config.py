@@ -2,7 +2,7 @@
 """All config options of schGo"""
 
 import os
-from sgo.instance import config
+from .instance import config
 from bson.json_util import JSONOptions
 from datetime import timedelta
 import os

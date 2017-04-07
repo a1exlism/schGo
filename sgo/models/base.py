@@ -1,8 +1,18 @@
 """
 models for sgo
 """
-from sgo.utils import check_dict
-from sgo.config import BaseConfig
+# sgo
+from ..utils import check_dict
+from ..config import BaseConfig
+from ..structures import LookupDict
+
+from enum import Enum
+
+
+class DataType(Enum):
+    Integer = 'int'
+    String = 'str'
+    List = 'list'
 
 
 class ModelMeta(type):
@@ -18,15 +28,20 @@ class BaseModel(metaclass=ModelMeta):
     Assume: item is not set type
 
     """
-    _MOD = {}
+    _MOD = dict()
 
-    def __init__(self, *args, **kwargs):
-        if 'doc' in kwargs:
-            self.doc = kwargs['doc']
-        elif isinstance(self._MOD, dict):
-            self.doc = self._MOD.copy()
+    _register = {
+        "key_name: [type, validate_func]"
+    }
+
+    def __init__(self, doc=None, *args, **kwargs):
+        if doc:
+            self.doc = doc
         else:
-            self.doc = {}
+            if isinstance(self._MOD, dict):
+                self.doc = self._MOD.copy()
+            else:
+                self.doc = {}
 
     def check(self):
         """
@@ -68,3 +83,9 @@ class Admin:
     # Required for flask-login interface
     def __str__(self):
         return self.id
+
+
+# TODO: finish this test
+def check_model(model):
+    """Check is there any attribute collide in model"""
+    pass

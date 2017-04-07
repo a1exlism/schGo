@@ -13,6 +13,8 @@ flask_httpauth
 redis
 cryptography
 
+
+
 # dev
 
 ## test
@@ -22,5 +24,7 @@ pytest
 docker-compose
 
 ## doc
-
 Sphinx
+
+## notebook
+jupyter
